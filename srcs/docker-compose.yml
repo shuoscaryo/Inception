@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    env_file:
+      - .env
+    volumes: 
+      - mariadb:/var/lib/mysql
+    networks:
+      - Inception
+    restart: on-failure
+    expose:
+      - "3306"
+
+  wordpress:
+    build: ./requirements/wordpress
+    env_file:
+      - .env
+    volumes: 
+      - wordpress:/var/www/wordpress
+    networks:
+      - Inception
+    restart: on-failure
+    depends_on:
+      - mariadb
+    expose:
+      - "9000"
+    
+  nginx:
+    build: ./requirements/nginx
+    ports:
+      - "443:443"
+    env_file:
+      - .env
+    volumes: 
+      - wordpress:/var/www/wordpress
+    networks:
+      - Inception
+    restart: on-failure
+    depends_on:
+      - wordpress
+
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/iortega/data/mariadb
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/iortega/data/wordpress
+      o: bind
+      
+
+networks:
+  Inception:
+    driver: bridge
