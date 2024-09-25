@@ -2,7 +2,7 @@ CONTAINERS := mariadb wordpress nginx
 
 YML_PATH = ./srcs/docker-compose.yml
 
-VOL_DIR := /home/iortega-/data
+VOL_DIR := /home/orudek/data
 
 VOLUMES := mariadb wordpress
 
