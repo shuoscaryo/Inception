@@ -46,7 +46,7 @@ if [ ! -f /wordpress/wp-config.php ]; then
 
   wp core install --url=$DOMAIN_NAME --title=Inception --admin_user=$ADMIN_USER --admin_password=$ADMIN_PASSWORD --admin_email="$ADMIN_EMAIL" --path=/wordpress
 
-  wp theme install --activate twentytwentyfour --path=/wordpress
+  wp theme install --activate hello-elementor --path=/wordpress
 
   wp user create $WORDPRESS_USER $WORDPRESS_EMAIL --role=author --user_pass=$WORDPRESS_PASSWORD --path=/wordpress
 
