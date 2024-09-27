@@ -7,7 +7,6 @@ RUN apk update && apk add nginx openssl
 RUN mkdir -p /app /www /etc/nginx/ssl
 
 # SSL certificate
-
 RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=ES/ST=Madrid/L=Madrid/O=42/OU=42/CN=orudek.42.fr/UID=orudek"
 
 # Copy configuration files
