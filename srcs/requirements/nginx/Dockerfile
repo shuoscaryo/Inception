@@ -13,8 +13,7 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 # Copy configuration files
 COPY ./config/nginx.conf /etc/nginx/nginx.conf
 
-# Port 80 y 443
-EXPOSE 80 443
+EXPOSE 443
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
