@@ -1,9 +1,5 @@
 #! /bin/sh
 
-function add_query_line {
-  echo "$1" >> "$MYSQL_INIT_FILE"
-}
-
 chown -R mysql: /var/lib/mysql
 chmod 777 /var/lib/mysql
 
