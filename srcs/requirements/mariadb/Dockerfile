@@ -9,8 +9,6 @@ COPY ./conf/my.cnf /etc/my.cnf
 # Copy tools
 COPY tools/MariaSetUp.sh /tools/MariaSetUp.sh
 
-RUN mkdir -p /run/mysqld
-
 RUN mkdir -p /var/lib/mysql
 
 # Execute the script

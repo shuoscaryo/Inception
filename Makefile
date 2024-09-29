@@ -12,13 +12,14 @@ dt: $(VOLUME)
 	sudo docker compose -f $(YML_PATH) -p $(PROJECT) up --build -d --remove-orphans
 
 down:
-	sudo docker compose -f $(YML_PATH) down 
+	sudo docker compose -f $(YML_PATH) -p $(PROJECT) down
+
+stop:
+	sudo docker compose -f $(YML_PATH) -p $(PROJECT) stop 
 
 clean:
+	sudo docker compose -f $(YML_PATH) -p $(PROJECT) down -v --remove-orphans --rmi all
 	sudo rm -rf $(VOL_DIR)
-	docker rmi mariadb wordpress nginx || true
-	sudo docker compose -f $(YML_PATH) down -v || true
-	sudo docker image prune -f
 
 re: clean run
 
@@ -26,6 +27,6 @@ $(VOLUME):
 	mkdir -p $(VOLUME) 2>/dev/null
 
 exec-%:
-	sudo docker compose -f $(YML_PATH) exec $* sh
+	sudo docker compose -f $(YML_PATH) -p $(PROJECT) exec $* sh
 
 $(foreach CONTAINER,$(CONTAINERS),$(eval $(CONTAINER): exec-$(CONTAINER)))
