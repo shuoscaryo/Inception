@@ -1,6 +1,8 @@
 services:
   mariadb:
     build: ./requirements/mariadb
+    image: mariadb
+    container_name: mariadb
     env_file:
       - .env
     volumes: 
@@ -13,6 +15,8 @@ services:
 
   wordpress:
     build: ./requirements/wordpress
+    image: wordpress
+    container_name: wordpress
     env_file:
       - .env
     volumes: 
@@ -27,6 +31,8 @@ services:
     
   nginx:
     build: ./requirements/nginx
+    image: nginx
+    container_name: nginx
     ports:
       - "443:443"
     env_file:
@@ -41,12 +47,14 @@ services:
 
 volumes:
   mariadb:
+    name: mariadb
     driver: local
     driver_opts:
       type: none
       device: /home/oscar/data/mariadb
       o: bind
   wordpress:
+    name: wordpress
     driver: local
     driver_opts:
       type: none
