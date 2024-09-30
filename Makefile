@@ -19,9 +19,11 @@ stop:
 
 clean:
 	sudo docker compose -f $(YML_PATH) -p $(PROJECT) down -v --remove-orphans --rmi all
+
+fclean: clean
 	sudo rm -rf $(VOL_DIR)
 
-re: clean run
+re: fclean run
 
 $(VOLUME):
 	mkdir -p $(VOLUME) 2>/dev/null
@@ -30,3 +32,5 @@ exec-%:
 	sudo docker compose -f $(YML_PATH) -p $(PROJECT) exec $* sh
 
 $(foreach CONTAINER,$(CONTAINERS),$(eval $(CONTAINER): exec-$(CONTAINER)))
+
+.PHONY: run dt down stop clean fclean re exec-% $(foreach CONTAINER,$(CONTAINERS),$(CONTAINER))

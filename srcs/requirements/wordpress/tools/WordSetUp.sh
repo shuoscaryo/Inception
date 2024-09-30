@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Check if required environment variables are set
+if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] \
+	|| [ -z "$MYSQL_PASSWORD" ] || [ -z "$ADMIN_USER" ] \
+	|| [ -z "$ADMIN_PASSWORD" ] || [ -z "$ADMIN_EMAIL" ] \
+	|| [ -z "$WORDPRESS_USER" ] || [ -z "$WORDPRESS_PASSWORD" ] \
+	|| [ -z "$WORDPRESS_EMAIL" ] || [ -z "$DOMAIN_NAME" ]; then
+  echo "Missing required environment variables"
+  exit 1
+fi
+
 # Download WP-CLI and save it as /usr/local/bin/wp so it can be used as "wp stuff"
 if [ ! -f "/usr/local/bin/wp" ]; then
   curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --silent
