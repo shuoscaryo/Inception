@@ -6,27 +6,36 @@ if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] \
 	|| [ -z "$ADMIN_PASSWORD" ] || [ -z "$ADMIN_EMAIL" ] \
 	|| [ -z "$WORDPRESS_USER" ] || [ -z "$WORDPRESS_PASSWORD" ] \
 	|| [ -z "$WORDPRESS_EMAIL" ] || [ -z "$DOMAIN_NAME" ]; then
-  echo "Missing required environment variables"
-  exit 1
+	echo "Missing required environment variables"
+	sleep 5
+	exit 1
+fi
+
+# Check if users contain words "admin" or "administrator" in case insensitive way
+if [[ "$ADMIN_USER" =~ [Aa][Dd][Mm][Ii][Nn] ]] || [[ "$WORDPRESS_USER" =~ [Aa][Dd][Mm][Ii][Nn] ]]; then
+	echo "Usernames cannot contain 'admin' or 'administrator'"
+	sleep 5
+	exit 1
 fi
 
 # Download WP-CLI and save it as /usr/local/bin/wp so it can be used as "wp stuff"
 if [ ! -f "/usr/local/bin/wp" ]; then
-  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --silent
-  chmod +x wp-cli.phar
-  mv wp-cli.phar /usr/local/bin/wp
+	curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --silent
+	chmod +x wp-cli.phar
+	mv wp-cli.phar /usr/local/bin/wp
 fi
 
 # Exit if WP-CLI installation failed
 if ! wp --info > /dev/null 2>&1; then
-  echo "WP-CLI installation failed."
-  exit 1
+	echo "WP-CLI installation failed."
+	sleep 5
+	exit 1
 fi
 
 # Wait for MySQL to be ready
+echo "Connecting to MySQL..."
 while true; do
-	echo "Checking connection to MySQL..."
-	if mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h mariadb -e "SELECT 1;" > /dev/null;
+	if mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h mariadb -e "SELECT 1;" &> /dev/null;
 	then
 		break
 	fi

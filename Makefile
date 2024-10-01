@@ -6,6 +6,7 @@ VOLUMES := mariadb wordpress
 VOLUME = $(addprefix $(VOL_DIR)/,$(VOLUMES))
 
 run: $(VOLUME)
+	
 	sudo docker compose -f $(YML_PATH) -p $(PROJECT) up --build --remove-orphans
 
 dt: $(VOLUME)

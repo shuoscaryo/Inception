@@ -3,6 +3,7 @@
 if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ] \
 	|| [ -z "$MYSQL_PASSWORD" ] || [ -z "$MYSQL_ROOT_PASSWORD" ]; then
 	echo "Missing required environment variables"
+	sleep 5
 	exit 1
 fi
 
