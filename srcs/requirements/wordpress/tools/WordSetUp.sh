@@ -33,15 +33,21 @@ if ! wp --info > /dev/null 2>&1; then
 fi
 
 # Wait for MySQL to be ready
-echo "Connecting to MySQL..."
-while true; do
-	if mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h mariadb -e "SELECT 1;" &> /dev/null;
-	then
-		break
-	fi
-	echo "Connection failed, retrying in 5 seconds..."
-	sleep 5
+i=1
+while [ $i -le 11 ]; do
+    if mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -h mariadb -e "SELECT 1;" &> /dev/null; then
+        break
+    fi
+    if [ $i -eq 11 ]; then
+        echo "Connection to MySQL failed."
+        sleep 5
+        exit 1
+    fi
+    echo "Attempt $i Connection failed, retrying in 5 seconds..."
+    sleep 5
+    i=$((i + 1))
 done
+
 echo "Connection to MySQL established!"
 
 # Wordpress setup
