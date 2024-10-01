@@ -1,6 +1,6 @@
 FROM alpine:3.19.2
 
-# Install PHP, PHP-FPM, PHP-MYSQL and MariaDB-Client
+# Install PHP and PHP extensions
 RUN apk update && apk add php-fpm \
 	php-phar \
 	php-mysqli \
@@ -9,11 +9,9 @@ RUN apk update && apk add php-fpm \
 	php-session \
 	curl
 
-# Copy configuration files
+# Copy configuration files into the container
 COPY ./conf/www.conf /etc/php82/php-fpm.conf
-
-# Copy entrypoint
-COPY ./tools/WordSetUp.sh /tools/WordSetUp.sh
+COPY ./tools /tools
 
 EXPOSE 9000
 

@@ -47,6 +47,8 @@ wp core install --url="$DOMAIN_NAME" --title=Inception --admin_user="$ADMIN_USER
 wp theme install --activate hello-elementor
 wp user create "$WORDPRESS_USER" "$WORDPRESS_EMAIL" --role=author --user_pass="$WORDPRESS_PASSWORD"
 wp plugin install elementor --activate
+cp /tools/no-admin-or-administrator.php /wordpress/wp-content/plugins/
+wp plugin activate no-admin-or-administrator
 
 echo "Wordpress setup completed!"
 

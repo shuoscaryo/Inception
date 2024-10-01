@@ -12,4 +12,4 @@ COPY tools/MariaSetUp.sh /tools/MariaSetUp.sh
 RUN mkdir -p /var/lib/mysql
 
 # Execute the script
-CMD ["sh", "./tools/MariaSetUp.sh"]
+CMD ["sh", "/tools/MariaSetUp.sh"]
