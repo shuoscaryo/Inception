@@ -1,25 +1,27 @@
 PROJECT := inception
 CONTAINERS := mariadb wordpress nginx
 YML_PATH = ./srcs/docker-compose.yml
-VOL_DIR := /home/oscar/data
+VOL_DIR := /home/orudek/data
 VOLUMES := mariadb wordpress
 VOLUME = $(addprefix $(VOL_DIR)/,$(VOLUMES))
+ENV_FILE := .env
 
-run: $(VOLUME)
-	
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) up --build --remove-orphans
+DOCKER_COMPOSE := sudo ENV_FILE=$(ENV_FILE) docker compose -f $(YML_PATH) -p $(PROJECT)
+
+run: $(VOLUME)	
+	$(DOCKER_COMPOSE) up --build --remove-orphans
 
 dt: $(VOLUME)
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) up --build -d --remove-orphans
+	$(DOCKER_COMPOSE) up --build -d --remove-orphans
 
 down:
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) down
+	$(DOCKER_COMPOSE) down
 
 stop:
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) stop 
+	$(DOCKER_COMPOSE) stop 
 
 clean:
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) down -v --remove-orphans --rmi all
+	$(DOCKER_COMPOSE) down -v --remove-orphans --rmi all
 
 fclean: clean
 	sudo rm -rf $(VOL_DIR)
@@ -30,7 +32,7 @@ $(VOLUME):
 	mkdir -p $(VOLUME) 2>/dev/null
 
 exec-%:
-	sudo docker compose -f $(YML_PATH) -p $(PROJECT) exec $* sh
+	$(DOCKER_COMPOSE) exec $* sh
 
 $(foreach CONTAINER,$(CONTAINERS),$(eval $(CONTAINER): exec-$(CONTAINER)))
 
